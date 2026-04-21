@@ -6,7 +6,10 @@
 - 広告なし、トラッキングなし  
 - PWA対応でオフライン動作可能  
 - TEXT / URL / Wi-Fi / Mail / Tel / SMS / vCard / Geo に対応  
-- SVG / PNG 保存、クリップボードコピー対応  
+- SVG / PNG 保存、クリップボードコピー対応
+
+## スクリーンショット  
+<img width="480" alt="image" src="./images/1.1.jpg" />  
 
 ## 使い方  
 
@@ -18,6 +21,8 @@
 ## アナウンス  
 - Xでもアナウンスしています。  
   [https://x.com/hajimetwi3/status/2046417851494641672](https://x.com/hajimetwi3/status/2046417851494641672)  
+- ノート記事  
+  [https://note.com/hajimetwi3/n/na0c77bdc19b4](https://note.com/hajimetwi3/n/na0c77bdc19b4)
 
 ---  
 
@@ -43,3 +48,5 @@ https://www.qrcode.com/en/
 ---  
 ## 外部送信していない事の確認方法  
 DevToolsのNetworkタブ等でご確認いただけますと幸いです。  
+<img width="480" alt="image" src="./images/2.1.jpg" />    
+
