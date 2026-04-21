@@ -1,0 +1,428 @@
+:root {
+  --bg: #0a0a0a;
+  --fg: #e8e8e8;
+  --line: #222;
+  --accent: #00eaff;
+  --panel-bg: rgba(15, 15, 15, 0.88);
+  --btn-bg: #141414;
+  --btn-active: #00eaff;
+  --btn-active-fg: #000;
+  --qr-bg: #ffffff;
+  --qr-fg: #000000;
+  --qr-glow: transparent;
+  --qr-size: 320px;
+}
+
+[data-theme="mono"]   { --qr-bg: #ffffff; --qr-fg: #000000; --qr-glow: transparent; }
+[data-theme="invert"] { --qr-bg: #000000; --qr-fg: #ffffff; --qr-glow: transparent; }
+[data-theme="green"]  { --qr-bg: #000000; --qr-fg: #00ff9c; --qr-glow: #00ff9c; }
+[data-theme="amber"]  { --qr-bg: #000000; --qr-fg: #ffb400; --qr-glow: #ffb400; }
+[data-theme="pink"]   { --qr-bg: #000000; --qr-fg: #ff4fbf; --qr-glow: #ff4fbf; }
+[data-theme="cyber"]  { --qr-bg: #000000; --qr-fg: #00eaff; --qr-glow: #00eaff; }
+
+[data-size="s"]  { --qr-size: 200px; }
+[data-size="m"]  { --qr-size: 320px; }
+[data-size="l"]  { --qr-size: 440px; }
+[data-size="xl"] { --qr-size: min(90vw, 600px); }
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+               "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  font-size: 14px;
+  min-height: 100dvh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.qr-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 260px;
+  gap: 20px;
+}
+
+.qr-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  border-radius: 6px;
+  background: var(--qr-bg);
+  box-shadow: 0 0 24px 2px color-mix(in srgb, var(--qr-glow) 45%, transparent);
+  transition: box-shadow 0.25s ease, background 0.2s ease;
+}
+
+.qr-box {
+  width: var(--qr-size);
+  height: var(--qr-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-box svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.qr-box:empty::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(45deg, #eee 0 8px, #f5f5f5 8px 16px);
+  opacity: 0.3;
+}
+
+.qr-msg {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: 8px;
+  min-height: 1em;
+  text-align: center;
+  max-width: 300px;
+}
+
+.qr-msg[data-kind="ok"]  { color: #00eaff; }
+.qr-msg[data-kind="err"] { color: #ff6b6b; }
+.qr-msg[data-kind="info"]{ color: #cccccc; }
+
+.ip-inline {
+  display: flex;
+  gap: 6px;
+  align-items: stretch;
+}
+
+.ip-inline > input {
+  flex: 1;
+}
+
+.ip-icon-btn {
+  padding: 0 12px;
+  background: var(--btn-bg);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+}
+
+.ip-icon-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ip-icon-btn[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.inputs {
+  width: min(100%, 560px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ip-header {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 10px;
+  background: #101010;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+}
+
+.ip-label-tag {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  opacity: 0.5;
+}
+
+.ip-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.ip-desc {
+  font-size: 12px;
+  opacity: 0.65;
+  flex-basis: 100%;
+}
+
+.ip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid var(--line);
+  border-left: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  border-radius: 4px;
+}
+
+.ip[hidden] {
+  display: none;
+}
+
+.ip input, .ip textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: #111;
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font: inherit;
+  resize: vertical;
+}
+
+.ip input:focus, .ip textarea:focus {
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.ip textarea {
+  min-height: 70px;
+  font-family: inherit;
+}
+
+.ip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 13px;
+  padding: 4px 2px;
+}
+
+.ip-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.actions button {
+  padding: 8px 14px;
+  background: var(--btn-bg);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: 0.05em;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.actions button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.actions button:active {
+  transform: translateY(1px);
+}
+
+.actions button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.char-count {
+  margin-left: auto;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+}
+
+/* 設定パネル */
+.panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--panel-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 50vh;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.panel-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.label {
+  font-size: 11px;
+  opacity: 0.5;
+  letter-spacing: 0.1em;
+  min-width: 52px;
+}
+
+.label-inline {
+  margin-left: 12px;
+}
+
+.panel button {
+  padding: 4px 10px;
+  background: var(--btn-bg);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.panel button:hover {
+  border-color: var(--accent);
+}
+
+.panel button.on {
+  background: var(--btn-active);
+  color: var(--btn-active-fg);
+  border-color: var(--btn-active);
+}
+
+/* モーダル */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal {
+  background: #121212;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px 24px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.modal h3 {
+  margin-top: 18px;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+.modal p {
+  line-height: 1.6;
+}
+
+.modal code {
+  background: #0a0a0a;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.modal pre {
+  background: #0a0a0a;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.modal a {
+  color: var(--accent);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--btn-bg);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+
+.modal-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.modal-version {
+  opacity: 0.5;
+  font-size: 12px;
+  margin-top: 0;
+}
+
+.modal-hint {
+  opacity: 0.8;
+  font-size: 12px;
+}
+
+/* スクロールバー（webkit） */
+.panel::-webkit-scrollbar,
+.modal::-webkit-scrollbar { width: 6px; }
+.panel::-webkit-scrollbar-thumb,
+.modal::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+/* 縮小表示時の微調整 */
+@media (max-width: 480px) {
+  .qr-main { padding: 16px 12px 280px; }
+  .panel { padding: 6px 10px calc(6px + env(safe-area-inset-bottom)); }
+  .label { min-width: 44px; }
+}

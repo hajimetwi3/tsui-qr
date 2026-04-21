@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="入力内容を外部送信しない・広告なしで動作する、QRコード生成ツール。PWA対応・オフライン動作可能。">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0a0a0a">
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self'; font-src 'self'; script-src 'self'; worker-src 'self'; manifest-src 'self'; img-src 'self' blob: data:; connect-src 'self'; base-uri 'none'; form-action 'none';">
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tsui QR">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<title>Tsui QR</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tsui QR">
+<meta property="og:description" content="入力内容を外部送信しない・広告なしのQRコード生成ツール。">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+  <main class="qr-main">
+    <div class="qr-stage" id="qr-stage" aria-label="生成されたQRコード">
+      <div id="qr-box" class="qr-box"></div>
+      <div id="qr-msg" class="qr-msg" role="status" aria-live="polite"></div>
+    </div>
+
+    <section class="inputs" aria-label="QRに埋め込む内容">
+      <header class="ip-header">
+        <span class="ip-label-tag">TYPE</span>
+        <span class="ip-name" id="ip-name">Text / URL</span>
+        <span class="ip-desc" id="ip-desc">テキストまたはURLを埋め込みます</span>
+      </header>
+
+      <div class="ip" data-type="text">
+        <textarea id="in-text" rows="3" spellcheck="false"
+                  placeholder="テキスト または URL を入力"></textarea>
+      </div>
+
+      <div class="ip" data-type="wifi" hidden>
+        <input id="wf-ssid" placeholder="SSID" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <div class="ip-inline">
+          <input id="wf-pass" placeholder="Password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="password">
+          <button type="button" id="wf-pass-toggle" class="ip-icon-btn" aria-label="パスワード表示切替" aria-pressed="false">表示</button>
+        </div>
+        <div class="ip-row">
+          <label><input type="radio" name="wf-auth" value="WPA" checked> WPA/WPA2</label>
+          <label><input type="radio" name="wf-auth" value="WEP"> WEP</label>
+          <label><input type="radio" name="wf-auth" value="nopass"> None</label>
+          <label class="ip-hidden"><input type="checkbox" id="wf-hidden"> Hidden SSID</label>
+        </div>
+      </div>
+
+      <div class="ip" data-type="email" hidden>
+        <input id="em-to" placeholder="to (foo@example.com)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="email">
+        <input id="em-sub" placeholder="Subject" autocomplete="off" autocorrect="off" spellcheck="false">
+        <textarea id="em-body" rows="2" placeholder="Body" spellcheck="false" autocorrect="off"></textarea>
+      </div>
+
+      <div class="ip" data-type="tel" hidden>
+        <input id="tel-num" placeholder="+81-90-xxxx-xxxx" autocomplete="off" inputmode="tel">
+      </div>
+
+      <div class="ip" data-type="sms" hidden>
+        <input id="sms-num" placeholder="+81-90-xxxx-xxxx" autocomplete="off" inputmode="tel">
+        <textarea id="sms-body" rows="2" placeholder="Message" spellcheck="false" autocorrect="off"></textarea>
+      </div>
+
+      <div class="ip" data-type="vcard" hidden>
+        <input id="vc-fn" placeholder="Full Name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input id="vc-org" placeholder="Organization" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input id="vc-tel" placeholder="Tel" autocomplete="off" inputmode="tel">
+        <input id="vc-em" placeholder="Email" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="email">
+        <input id="vc-url" placeholder="URL" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="url">
+      </div>
+
+      <div class="ip" data-type="geo" hidden>
+        <input id="geo-lat" placeholder="Latitude (35.6895)" autocomplete="off" inputmode="decimal">
+        <input id="geo-lng" placeholder="Longitude (139.6917)" autocomplete="off" inputmode="decimal">
+      </div>
+
+      <div class="actions">
+        <button id="btn-svg">Save SVG</button>
+        <button id="btn-png">Save PNG</button>
+        <button id="btn-copy">Copy PNG</button>
+        <span id="char-count" class="char-count">0 chars</span>
+      </div>
+    </section>
+  </main>
+
+  <aside class="panel" role="group" aria-label="設定">
+    <div class="panel-row">
+      <span class="label">TYPE</span>
+      <button data-k="type" data-v="text">Text</button>
+      <button data-k="type" data-v="wifi">Wi-Fi</button>
+      <button data-k="type" data-v="email">Mail</button>
+      <button data-k="type" data-v="tel">Tel</button>
+      <button data-k="type" data-v="sms">SMS</button>
+      <button data-k="type" data-v="vcard">vCard</button>
+      <button data-k="type" data-v="geo">Geo</button>
+    </div>
+    <div class="panel-row">
+      <span class="label">EC</span>
+      <button data-k="ec" data-v="L">L</button>
+      <button data-k="ec" data-v="M">M</button>
+      <button data-k="ec" data-v="Q">Q</button>
+      <button data-k="ec" data-v="H">H</button>
+      <span class="label label-inline">MARGIN</span>
+      <button data-k="margin" data-v="0">0</button>
+      <button data-k="margin" data-v="2">2</button>
+      <button data-k="margin" data-v="4">4</button>
+    </div>
+    <div class="panel-row">
+      <span class="label">SIZE</span>
+      <button data-k="size" data-v="s">S</button>
+      <button data-k="size" data-v="m">M</button>
+      <button data-k="size" data-v="l">L</button>
+      <button data-k="size" data-v="xl">XL</button>
+    </div>
+    <div class="panel-row">
+      <span class="label">THEME</span>
+      <button data-k="theme" data-v="mono">Mono</button>
+      <button data-k="theme" data-v="invert">Invert</button>
+      <button data-k="theme" data-v="green">Green</button>
+      <button data-k="theme" data-v="amber">Amber</button>
+      <button data-k="theme" data-v="pink">Pink</button>
+      <button data-k="theme" data-v="cyber">Cyber</button>
+    </div>
+    <div class="panel-row">
+      <span class="label">INFO</span>
+      <button id="about-btn">About</button>
+    </div>
+  </aside>
+
+  <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <button class="modal-close" id="modal-close" aria-label="閉じる">Close</button>
+      <h2 id="modal-title">Tsui QR</h2>
+      <p class="modal-version">Version 1.0.0</p>
+
+      <h3>ABOUT</h3>
+      <p>入力内容を外部送信しない、広告なしのQRコード生成ツールです。入力した内容は端末の外に出ません。<br>
+      — <a href="https://github.com/hajimetwi3/tsui-qr/" target="_blank" rel="noopener noreferrer">詳細</a> —
+      </p>
+      <p class="modal-hint">DevToolsのNetworkタブを開いて通信が発生しないことをご確認いただけます。</p>
+
+
+      <h3>PRIVACY</h3>
+      <p>QRに埋め込む入力内容（テキスト・パスワード・連絡先など）は、サーバーへの送信はもちろん、<code>localStorage</code> 等への保存も一切行いません。設定（テーマ・サイズ等）のみ端末内に保存されます。</p>
+
+      <h3>USAGE</h3>
+      <p>TYPEを切り替えて、テキスト / URL / Wi-Fi / メール / 電話 / SMS / vCard / 位置情報 のQRを生成できます。生成されたQRはSVG / PNGで保存、またはクリップボードにコピー可能です。</p>
+
+      <h3>NOTE</h3>
+      <p>色付きテーマは装飾用です。実スキャンの確実性を優先する場合は Mono / Invert を推奨します。EC（エラー訂正レベル）はH(30%)が最も頑強ですが、データ容量は減ります。</p>
+
+      <h3>DISCLAIMER</h3>
+      <p>本アプリは現状有姿で提供され、動作の正確性・可用性について一切の保証はありません。ご利用は自己責任にてお願いします。</p>
+
+      <h3>LICENSE (This App)</h3>
+      <div class="author-line">Copyright (c) 2026 <a href="https://hajimetwi3.github.io/hajimetwi3/" target="_blank" rel="noopener noreferrer">Hajime Tsui</a></div>
+      <pre>MIT License
+
+Copyright (c) 2026 Hajime Tsui
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</pre>
+
+      <h3>THIRD-PARTY</h3>
+      <p><strong>qrcode-generator</strong><br>
+      Copyright (c) Kazuhiko Arase (<a href="https://github.com/kazuhikoarase/qrcode-generator" target="_blank" rel="noopener noreferrer">GitHub</a>)<br>
+      Licensed under MIT License<br>
+      Full license text: <a href="https://github.com/hajimetwi3/tsui-qr/blob/main/modules/qrcode-generator/LICENSE" target="_blank" rel="noopener noreferrer"><code>LICENSE</code></a></p>
+
+      <h3>TRADEMARK</h3>
+      <p>The word "QR Code" is a registered trademark of <a href="https://www.qrcode.com/en/" target="_blank" rel="noopener noreferrer">DENSO WAVE INCORPORATED</a>.</p>
+    </div>
+  </div>
+
+  <script src="./modules/qrcode-generator/qrcode.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

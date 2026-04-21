@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#0a0a0a"/>
+  <g fill="#00eaff">
+    <!-- 位置検出パターン（3隅） -->
+    <rect x="8"  y="8"  width="16" height="16"/>
+    <rect x="11" y="11" width="10" height="10" fill="#0a0a0a"/>
+    <rect x="14" y="14" width="4"  height="4"/>
+
+    <rect x="40" y="8"  width="16" height="16"/>
+    <rect x="43" y="11" width="10" height="10" fill="#0a0a0a"/>
+    <rect x="46" y="14" width="4"  height="4"/>
+
+    <rect x="8"  y="40" width="16" height="16"/>
+    <rect x="11" y="43" width="10" height="10" fill="#0a0a0a"/>
+    <rect x="14" y="46" width="4"  height="4"/>
+
+    <!-- データモジュール風の装飾 -->
+    <rect x="30" y="30" width="4" height="4"/>
+    <rect x="38" y="34" width="4" height="4"/>
+    <rect x="30" y="42" width="4" height="4"/>
+    <rect x="42" y="40" width="4" height="4"/>
+    <rect x="46" y="46" width="4" height="4"/>
+    <rect x="38" y="50" width="4" height="4"/>
+    <rect x="50" y="34" width="4" height="4"/>
+  </g>
+</svg>
