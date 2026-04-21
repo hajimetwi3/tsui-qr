@@ -12,8 +12,14 @@
 
 1. [https://hajimetwi3.github.io/tsui-qr/](https://hajimetwi3.github.io/tsui-qr/) をブラウザから直接開く  
 2. PWAとしてインストール（インストールしなくても良い）  
-3. 完全オフラインで利用したい場合、[https://github.com/hajimetwi3/tsui-qr](https://github.com/hajimetwi3/tsui-qr) をダウンロードしてブラウザから"index.html"を開き利用する事も可能（CSPや一部ファイル読み込み失敗による、Warning等は出ると思います）。  
+3. 完全オフラインで利用したい場合、[https://github.com/hajimetwi3/tsui-qr](https://github.com/hajimetwi3/tsui-qr) をダウンロードしてブラウザから"index.html"を開き利用する事も可能（CSPや一部ファイル読み込み失敗による、Warning等は出ると思います）。
 
+---  
+## アナウンス  
+- Xでもアナウンスしています。  
+  [https://x.com/hajimetwi3/status/2046417851494641672](https://x.com/hajimetwi3/status/2046417851494641672)  
+
+---  
 
 ## ライセンス  
 
