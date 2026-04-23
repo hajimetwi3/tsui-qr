@@ -46,10 +46,11 @@ https://www.qrcode.com/en/
 - 本サービスは現状のまま提供されており、動作の保証はありません。利用によって生じた損害について、作成者は一切の責任を負いません。自己責任でご利用ください。
 - 現在、外部からのプルリクエストは受け付けていません（This repository does not accept external pull requests.  
 
-
-
 ---  
 ## 外部送信していない事の確認方法  
 DevToolsのNetworkタブ等でご確認いただけますと幸いです。  
 <img width="480" alt="image" src="./images/2.1.jpg" />    
 
+---  
+## Tsui series  
+[https://hajimetwi3.github.io/hajimetwi3/Tsui-series/](https://hajimetwi3.github.io/hajimetwi3/Tsui-series/)  
